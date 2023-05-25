@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login Page</title>
+    <meta charset="UTF-8">
+    <style>
+        .container {
+            margin: 100px auto;
+            width: 300px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .container label {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .container input[type="text"],
+        .container input[type="password"] {
+            width: 90%;
+            padding: 10px;
+            border-radius: 3px;
+            border: 1px solid #ccc;
+            margin-bottom: 20px;
+        }
+
+        .container button {
+            background-color: blue;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        .container button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Login</h2>
+        <form id="loginForm">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+
+            <button type="submit">Login</button>
+        </form>
+    </div>
+    
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        const form = document.getElementById('loginForm');
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            const data = {
+                username: username,
+                password: password
+            };
+            axios.post('/login', data)
+                .then(response => {
+                	console.log(response.data);
+
+              
+                    if (response.data.statuS === 200) {
+                        alert('Login successful');
+                        window.location.href = 'Home.html';
+
+                       const userData = response.data.result;
+
+
+                        const userInfoContainer = document.createElement('div');
+                        userInfoContainer.id = 'userInfoContainer';
+
+                         for (const key in userData) {
+                            const value = userData[key];
+                            const userInfo = document.createElement('p');
+                            userInfo.textContent = `${key}: ${value}`;
+                            userInfoContainer.appendChild(userInfo);
+                        }
+
+                        
+                        document.body.appendChild(userInfoContainer);
+                    } else {
+                        alert('Login failed');
+                    }
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        });
+    </script>
+</body>
+</html>

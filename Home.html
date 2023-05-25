@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Home Page</title>
+    <meta charset="UTF-8">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+    <p>ホームページ</p>
+    <form action="getBuken"><button id="getDataButton">GET</button></form>
+    
+    <div id="dataContainer"></div>
+    <form action="/deleteData" method="get">
+        <button type="submit">delect</button>
+    </form>
+
+    <script> 
+         document.addEventListener("DOMContentLoaded", function() {
+             var getDataButton = document.getElementById("getDataButton");
+             var dataContainer = document.getElementById("dataContainer");
+
+             getDataButton.addEventListener("click", function() {
+                 var username = "zhao";
+                 axios.get('/getBuken?username=' + username)
+                     .then(function(response) {
+                         var data = response.data;
+                         dataContainer.innerText = JSON.stringify(data);
+                     })
+                     .catch(function(error) {
+                         console.error('失败:', error);
+                     });
+             });
+         });
+     </script> 
+</body>
+</html>
